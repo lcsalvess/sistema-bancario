@@ -7,6 +7,8 @@ import com.lucas.sistemabancario.repository.EnderecoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ClienteService {
     private final ClienteRepository clienteRepository;
@@ -22,5 +24,9 @@ public class ClienteService {
         Endereco endereco = enderecoRepository.save(cliente.getEndereco());
         cliente.setEndereco(endereco);
         return clienteRepository.save(cliente);
+    }
+
+    public List<Cliente> listar() {
+        return clienteRepository.findAll();
     }
 }
