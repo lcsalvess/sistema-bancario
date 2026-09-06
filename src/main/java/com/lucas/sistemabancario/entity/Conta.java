@@ -1,0 +1,69 @@
+package com.lucas.sistemabancario.entity;
+
+import com.lucas.sistemabancario.entity.enums.SituacaoConta;
+import jakarta.persistence.*;
+
+import java.math.BigDecimal;
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Conta {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Cliente titular;
+    @Column(nullable = false, unique = true)
+    private String numeroConta;
+    @Column(nullable = false, precision = 19, scale = 2)
+    private BigDecimal saldo = BigDecimal.ZERO;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SituacaoConta situacaoConta = SituacaoConta.ATIVA;
+
+    public Conta () {}
+
+    public Conta(Cliente titular, String numeroConta, BigDecimal saldo, SituacaoConta situacaoConta) {
+        this.titular = titular;
+        this.numeroConta = numeroConta;
+        this.saldo = saldo;
+        this.situacaoConta = situacaoConta;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Cliente getTitular() {
+        return titular;
+    }
+
+    public void setTitular(Cliente titular) {
+        this.titular = titular;
+    }
+
+    public String getNumeroConta() {
+        return numeroConta;
+    }
+
+    public void setNumeroConta(String numeroConta) {
+        this.numeroConta = numeroConta;
+    }
+
+    public BigDecimal getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(BigDecimal saldo) {
+        this.saldo = saldo;
+    }
+
+    public SituacaoConta getSituacaoConta() {
+        return situacaoConta;
+    }
+
+    public void setSituacaoConta(SituacaoConta situacaoConta) {
+        this.situacaoConta = situacaoConta;
+    }
+}
