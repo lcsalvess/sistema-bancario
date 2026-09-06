@@ -44,6 +44,12 @@ public class ClienteService {
         return clienteRepository.save(clienteExistente);
     }
 
+    @Transactional
+    public void deletarPorId(Long id) {
+        Cliente cliente = buscarPorId(id);
+        clienteRepository.delete(cliente);
+    }
+
     private void atualizarEndereco(Endereco enderecoExistente, Endereco enderecoNovo) {
         enderecoExistente.setTipoLogradouro(enderecoNovo.getTipoLogradouro());
         enderecoExistente.setLogradouro(enderecoNovo.getLogradouro());

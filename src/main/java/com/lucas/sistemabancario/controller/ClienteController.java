@@ -7,17 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
     private final ClienteService clienteService;
-    private final ClienteRepository clienteRepository;
 
     public ClienteController(ClienteService clienteService, ClienteRepository clienteRepository) {
         this.clienteService = clienteService;
-        this.clienteRepository = clienteRepository;
     }
 
     @PostMapping
@@ -40,5 +37,11 @@ public class ClienteController {
     @PutMapping("/{id}")
     public Cliente atualizarPorId(@PathVariable Long id, @RequestBody Cliente cliente){
         return clienteService.atualizar(id, cliente);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletarPorId(@PathVariable Long id) {
+        clienteService.deletarPorId(id);
     }
 }
