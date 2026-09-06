@@ -4,7 +4,10 @@ import com.lucas.sistemabancario.entity.Cliente;
 import com.lucas.sistemabancario.entity.Conta;
 import com.lucas.sistemabancario.entity.ContaCorrente;
 import com.lucas.sistemabancario.entity.ContaPoupanca;
+import com.lucas.sistemabancario.exception.ContaAlreadyExistsException;
 import com.lucas.sistemabancario.exception.ContaNotFoundException;
+import com.lucas.sistemabancario.repository.ContaCorrenteRepository;
+import com.lucas.sistemabancario.repository.ContaPoupancaRepository;
 import com.lucas.sistemabancario.repository.ContaRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +17,14 @@ import java.util.List;
 @Service
 public class ContaService {
     private final ContaRepository contaRepository;
+    private final ContaCorrenteRepository contaCorrenteRepository;
+    private final ContaPoupancaRepository contaPoupancaRepository;
     private final ClienteService clienteService;
 
-    public ContaService(ContaRepository contaRepository, ClienteService clienteService) {
+    public ContaService(ContaRepository contaRepository, ContaCorrenteRepository contaCorrenteRepository, ContaPoupancaRepository contaPoupancaRepository, ClienteService clienteService) {
         this.contaRepository = contaRepository;
+        this.contaCorrenteRepository = contaCorrenteRepository;
+        this.contaPoupancaRepository = contaPoupancaRepository;
         this.clienteService = clienteService;
     }
 
@@ -49,6 +56,9 @@ public class ContaService {
 
     public ContaCorrente criarContaCorrente(Long clienteId){
         Cliente cliente = clienteService.buscarPorId(clienteId);
+        if (contaCorrenteRepository.existsByTitularId(clienteId)) {
+            throw new ContaAlreadyExistsException("O cliente já possui uma conta corrente.");
+        }
         String numeroConta = gerarNumeroConta();
         ContaCorrente contaCorrente = new ContaCorrente(cliente, numeroConta);
         return contaRepository.save(contaCorrente);
@@ -56,6 +66,9 @@ public class ContaService {
 
     public ContaPoupanca criarContaPoupanca(Long clienteId){
         Cliente cliente = clienteService.buscarPorId(clienteId);
+        if (contaPoupancaRepository.existsByTitularId(clienteId)) {
+            throw new ContaAlreadyExistsException("O cliente já possui uma conta poupança.");
+        }
         String numeroConta = gerarNumeroConta();
         LocalDate dataUltimoRendimento = LocalDate.now();
         ContaPoupanca contaPoupanca = new ContaPoupanca(cliente, numeroConta, dataUltimoRendimento);
