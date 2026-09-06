@@ -2,12 +2,14 @@ package com.lucas.sistemabancario.service;
 
 import com.lucas.sistemabancario.entity.Cliente;
 import com.lucas.sistemabancario.entity.Endereco;
+import com.lucas.sistemabancario.exception.ClienteNotFoundException;
 import com.lucas.sistemabancario.repository.ClienteRepository;
 import com.lucas.sistemabancario.repository.EnderecoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -28,5 +30,10 @@ public class ClienteService {
 
     public List<Cliente> listar() {
         return clienteRepository.findAll();
+    }
+
+    public Cliente buscarPorId(Long id) {
+        return clienteRepository.findById(id)
+                .orElseThrow(() -> new ClienteNotFoundException("Cliente não encontrado"));
     }
 }

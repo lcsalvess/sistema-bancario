@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/clientes")
@@ -29,5 +30,10 @@ public class ClienteController {
     @ResponseStatus(HttpStatus.OK)
     public List<Cliente> listar() {
         return clienteService.listar();
+    }
+
+    @GetMapping("/{id}")
+    public Cliente buscarPorId(@PathVariable Long id){
+        return clienteService.buscarPorId(id);
     }
 }
