@@ -3,10 +3,12 @@ package com.lucas.sistemabancario.service;
 import com.lucas.sistemabancario.entity.Cliente;
 import com.lucas.sistemabancario.entity.Conta;
 import com.lucas.sistemabancario.entity.ContaCorrente;
+import com.lucas.sistemabancario.entity.ContaPoupanca;
 import com.lucas.sistemabancario.exception.ContaNotFoundException;
 import com.lucas.sistemabancario.repository.ContaRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -50,5 +52,13 @@ public class ContaService {
         String numeroConta = gerarNumeroConta();
         ContaCorrente contaCorrente = new ContaCorrente(cliente, numeroConta);
         return contaRepository.save(contaCorrente);
+    }
+
+    public ContaPoupanca criarContaPoupanca(Long clienteId){
+        Cliente cliente = clienteService.buscarPorId(clienteId);
+        String numeroConta = gerarNumeroConta();
+        LocalDate dataUltimoRendimento = LocalDate.now();
+        ContaPoupanca contaPoupanca = new ContaPoupanca(cliente, numeroConta, dataUltimoRendimento);
+        return contaRepository.save(contaPoupanca);
     }
 }

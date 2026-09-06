@@ -2,6 +2,7 @@ package com.lucas.sistemabancario.controller;
 
 import com.lucas.sistemabancario.entity.Conta;
 import com.lucas.sistemabancario.entity.ContaCorrente;
+import com.lucas.sistemabancario.entity.ContaPoupanca;
 import com.lucas.sistemabancario.service.ContaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -31,5 +32,11 @@ public class ContaController {
     @ResponseStatus(HttpStatus.CREATED)
     public ContaCorrente criarContaCorrente(@PathVariable Long clienteId) {
         return contaService.criarContaCorrente(clienteId);
+    }
+
+    @PostMapping("/poupanca/{clienteId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ContaPoupanca criarContaPoupanca(@PathVariable Long clienteId) {
+        return contaService.criarContaPoupanca(clienteId);
     }
 }
