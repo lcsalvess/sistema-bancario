@@ -9,7 +9,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -35,5 +34,31 @@ public class ClienteService {
     public Cliente buscarPorId(Long id) {
         return clienteRepository.findById(id)
                 .orElseThrow(() -> new ClienteNotFoundException("Cliente não encontrado"));
+    }
+
+    @Transactional
+    public Cliente atualizar(Long id, Cliente cliente) {
+        Cliente clienteExistente = buscarPorId(id);
+        atualizarCliente(clienteExistente, cliente);
+        atualizarEndereco(clienteExistente.getEndereco(), cliente.getEndereco());
+        return clienteRepository.save(clienteExistente);
+    }
+
+    private void atualizarEndereco(Endereco enderecoExistente, Endereco enderecoNovo) {
+        enderecoExistente.setTipoLogradouro(enderecoNovo.getTipoLogradouro());
+        enderecoExistente.setLogradouro(enderecoNovo.getLogradouro());
+        enderecoExistente.setNumero(enderecoNovo.getNumero());
+        enderecoExistente.setComplemento(enderecoNovo.getComplemento());
+        enderecoExistente.setBairro(enderecoNovo.getBairro());
+        enderecoExistente.setCidade(enderecoNovo.getCidade());
+        enderecoExistente.setEstado(enderecoNovo.getEstado());
+        enderecoExistente.setCep(enderecoNovo.getCep());
+    }
+
+    private void atualizarCliente (Cliente clienteExistente, Cliente clienteNovo) {
+        clienteExistente.setNome(clienteNovo.getNome());
+        clienteExistente.setCpf(clienteNovo.getCpf());
+        clienteExistente.setEmail(clienteNovo.getEmail());
+        clienteExistente.setTelefone(clienteNovo.getTelefone());
     }
 }
