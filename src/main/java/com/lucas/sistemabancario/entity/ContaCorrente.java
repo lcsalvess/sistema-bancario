@@ -1,6 +1,7 @@
 package com.lucas.sistemabancario.entity;
 
 import com.lucas.sistemabancario.entity.enums.SituacaoConta;
+import com.lucas.sistemabancario.entity.enums.TipoConta;
 import jakarta.persistence.Entity;
 
 import java.math.BigDecimal;
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 public class ContaCorrente extends Conta{
     public ContaCorrente () {}
 
-    public ContaCorrente(Cliente titular, String numeroConta, BigDecimal saldo, SituacaoConta situacaoConta) {
-        super(titular, numeroConta, saldo, situacaoConta);
+    public ContaCorrente(Cliente titular, String numeroConta) {
+        super(titular, numeroConta, TipoConta.CORRENTE);
     }
 }

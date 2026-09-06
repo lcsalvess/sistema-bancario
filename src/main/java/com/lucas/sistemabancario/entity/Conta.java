@@ -1,6 +1,7 @@
 package com.lucas.sistemabancario.entity;
 
 import com.lucas.sistemabancario.entity.enums.SituacaoConta;
+import com.lucas.sistemabancario.entity.enums.TipoConta;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -21,20 +22,26 @@ public abstract class Conta {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SituacaoConta situacaoConta = SituacaoConta.ATIVA;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoConta tipoConta;
 
     public Conta () {}
 
-    public Conta(Cliente titular, String numeroConta, BigDecimal saldo, SituacaoConta situacaoConta) {
+    public Conta(Cliente titular, String numeroConta, TipoConta tipoConta) {
         this.titular = titular;
         this.numeroConta = numeroConta;
-        this.saldo = saldo;
-        this.situacaoConta = situacaoConta;
+        this.tipoConta = tipoConta;
     }
 
     public Long getId() {
         return id;
     }
 
+    public TipoConta getTipoConta() {
+        return tipoConta;
+    }
+    
     public Cliente getTitular() {
         return titular;
     }

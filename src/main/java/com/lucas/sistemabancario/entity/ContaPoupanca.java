@@ -1,6 +1,7 @@
 package com.lucas.sistemabancario.entity;
 
 import com.lucas.sistemabancario.entity.enums.SituacaoConta;
+import com.lucas.sistemabancario.entity.enums.TipoConta;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
@@ -14,8 +15,8 @@ public class ContaPoupanca extends Conta{
 
     public ContaPoupanca() {}
 
-    public ContaPoupanca(Cliente titular, String numeroConta, BigDecimal saldo, SituacaoConta situacaoConta, LocalDate dataUltimoRendimento) {
-        super(titular, numeroConta, saldo, situacaoConta);
+    public ContaPoupanca(Cliente titular, String numeroConta, LocalDate dataUltimoRendimento) {
+        super(titular, numeroConta, TipoConta.POUPANCA);
         this.dataUltimoRendimento = dataUltimoRendimento;
     }
 
