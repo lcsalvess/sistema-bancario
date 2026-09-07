@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class TransacaoService {
@@ -35,5 +36,10 @@ public class TransacaoService {
         conta.creditar(valor);
         Transacao transacao = new Transacao(TipoTransacao.DEPOSITO, valor, LocalDateTime.now(), conta);
         transacaoRepository.save(transacao);
+    }
+
+    public List<Transacao> listarPorConta(Long contaId) {
+        contaService.buscarPorId(contaId);
+        return transacaoRepository.findByContaId(contaId);
     }
 }
