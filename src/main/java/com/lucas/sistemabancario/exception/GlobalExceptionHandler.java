@@ -24,4 +24,16 @@ public class GlobalExceptionHandler {
     public String tratarContaAlreadyExists(ContaAlreadyExistsException exception) {
         return exception.getMessage();
     }
+
+    @ExceptionHandler(ContaIsNotActiveException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String tratarContaIsNotActive(ContaIsNotActiveException exception) {
+        return exception.getMessage();
+    }
+
+    @ExceptionHandler(ValorInvalidoException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String tratarValorInvalido(ValorInvalidoException exception) {
+        return exception.getMessage();
+    }
 }

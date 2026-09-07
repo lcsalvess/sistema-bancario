@@ -62,15 +62,16 @@ public abstract class Conta {
         return saldo;
     }
 
-    public void setSaldo(BigDecimal saldo) {
-        this.saldo = saldo;
+    public void creditar(BigDecimal valor) {
+        this.saldo = this.saldo.add(valor);
+    }
+
+    public void debitar(BigDecimal valor) {
+        this.saldo = this.saldo.subtract(valor);
     }
 
     public SituacaoConta getSituacaoConta() {
         return situacaoConta;
     }
 
-    public void setSituacaoConta(SituacaoConta situacaoConta) {
-        this.situacaoConta = situacaoConta;
-    }
 }
