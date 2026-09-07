@@ -30,7 +30,15 @@ public class TransacaoController {
 
     @PostMapping("/saque/{contaId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void sacar (@PathVariable Long contaId, @RequestParam BigDecimal valor) {
+    public void sacar(@PathVariable Long contaId, @RequestParam BigDecimal valor) {
         transacaoService.sacar(contaId, valor);
+    }
+
+    @PostMapping("/transferencia")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void transferir(@RequestParam Long contaIdOrigem,
+                           @RequestParam Long contaIdDestino,
+                           @RequestParam BigDecimal valor) {
+        transacaoService.transferir(contaIdOrigem, contaIdDestino, valor);
     }
 }

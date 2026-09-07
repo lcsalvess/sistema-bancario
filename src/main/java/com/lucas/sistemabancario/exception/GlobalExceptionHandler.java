@@ -42,4 +42,10 @@ public class GlobalExceptionHandler {
     public String tratarSaldoIsNotEnough(SaldoIsNotEnoughException exception) {
         return exception.getMessage();
     }
+
+    @ExceptionHandler(ContasIguaisException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String tratarContasIguais(ContasIguaisException exception) {
+        return exception.getMessage();
+    }
 }
