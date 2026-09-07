@@ -36,4 +36,10 @@ public class GlobalExceptionHandler {
     public String tratarValorInvalido(ValorInvalidoException exception) {
         return exception.getMessage();
     }
+
+    @ExceptionHandler(SaldoIsNotEnoughException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String tratarSaldoIsNotEnough(SaldoIsNotEnoughException exception) {
+        return exception.getMessage();
+    }
 }

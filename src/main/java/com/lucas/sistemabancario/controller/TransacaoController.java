@@ -27,4 +27,10 @@ public class TransacaoController {
     public List<Transacao> listarPorConta(@PathVariable Long contaId) {
         return transacaoService.listarPorConta(contaId);
     }
+
+    @PostMapping("/saque/{contaId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void sacar (@PathVariable Long contaId, @RequestParam BigDecimal valor) {
+        transacaoService.sacar(contaId, valor);
+    }
 }

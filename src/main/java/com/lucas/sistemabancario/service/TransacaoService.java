@@ -5,6 +5,7 @@ import com.lucas.sistemabancario.entity.Transacao;
 import com.lucas.sistemabancario.entity.enums.SituacaoConta;
 import com.lucas.sistemabancario.entity.enums.TipoTransacao;
 import com.lucas.sistemabancario.exception.ContaIsNotActiveException;
+import com.lucas.sistemabancario.exception.SaldoIsNotEnoughException;
 import com.lucas.sistemabancario.exception.ValorInvalidoException;
 import com.lucas.sistemabancario.repository.TransacaoRepository;
 import jakarta.transaction.Transactional;
@@ -27,12 +28,8 @@ public class TransacaoService {
     @Transactional
     public void depositar(Long contaId, BigDecimal valor) {
         Conta conta = contaService.buscarPorId(contaId);
-        if (conta.getSituacaoConta() != SituacaoConta.ATIVA) {
-            throw new ContaIsNotActiveException("A conta informada não está ativa.");
-        }
-        if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new ValorInvalidoException("O valor deve ser maior que zero.");
-        }
+        validarContaAtiva(conta);
+        validarValor(valor);
         conta.creditar(valor);
         Transacao transacao = new Transacao(TipoTransacao.DEPOSITO, valor, LocalDateTime.now(), conta);
         transacaoRepository.save(transacao);
@@ -41,5 +38,30 @@ public class TransacaoService {
     public List<Transacao> listarPorConta(Long contaId) {
         contaService.buscarPorId(contaId);
         return transacaoRepository.findByContaId(contaId);
+    }
+
+    @Transactional
+    public void sacar(Long contaId, BigDecimal valor) {
+        Conta conta = contaService.buscarPorId(contaId);
+        validarContaAtiva(conta);
+        validarValor(valor);
+        if (conta.getSaldo().compareTo(valor) < 0) {
+            throw new SaldoIsNotEnoughException("O valor informado é maior do que o saldo.");
+        }
+        conta.debitar(valor);
+        Transacao transacao = new Transacao(TipoTransacao.SAQUE, valor, LocalDateTime.now(), conta);
+        transacaoRepository.save(transacao);
+    }
+
+    private void validarContaAtiva(Conta conta) {
+        if (conta.getSituacaoConta() != SituacaoConta.ATIVA) {
+            throw new ContaIsNotActiveException("A conta informada não está ativa.");
+        }
+    }
+
+    private void validarValor(BigDecimal valor) {
+        if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new ValorInvalidoException("O valor deve ser maior que zero.");
+        }
     }
 }
